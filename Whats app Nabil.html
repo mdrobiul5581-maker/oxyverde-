@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OxyVerde - EcoGlow System: A sustainable innovation to combat urban air pollution and reduce the greenhouse effect for the Conrad Challenge.">
+    <title>OxyVerde | Conrad Challenge</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        // FIX: Safety check to initialize tailwind object if CDN is slow to load
+        window.tailwind = window.tailwind || {};
+
+        // Custom Tailwind configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#ECFDF5', // green-50
+                            DEFAULT: '#10B981', // green-500
+                            medium: '#047857', // green-700
+                            dark: '#064E3B', // green-900
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    transitionDelay: {
+                        '0': '0ms',
+                        '200': '200ms',
+                        '400': '400ms',
+                        '600': '600ms',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Smooth Scrolling Offset */
+        html {
+            scroll-padding-top: 5rem; /* Offset for sticky header */
+        }
+        
+        /* Hero Minimum Height */
+        .hero-min-height {
+            min-height: 600px;
+        }
+
+        /* Team Image Styling */
+        .team-img {
+            width: 128px;
+            height: 128px;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 9999px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 1rem;
+            border-width: 4px;
+            border-color: #ECFDF5;
+        }
+        
+        /* --- Smooth Scroll Animation Classes --- */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: opacity, transform;
+        }
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Stagger delays for children */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+
+        /* --- Modal Animation Classes --- */
+        #team-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #modal-content {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease-in-out;
+            transform: scale(0.9) translateY(10px);
+            opacity: 0;
+        }
+        #team-modal.is-open #modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        
+        /* --- Mobile Menu Animation --- */
+        #mobile-menu {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.menu-open {
+            max-height: 400px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 antialiased selection:bg-brand-light selection:text-brand-dark">
+
+    <!-- 
+      Header / Navigation
+    -->
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm transition-all duration-300">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center space-x-2 hover:opacity-80 transition-opacity duration-300">
+                    <img src="https://res.cloudinary.com/dusbdoji2/image/upload/v1763449399/IMG_0085_pdy6yy.png" alt="OxyVerde Logo" class="h-12 w-auto">
+                </a>
+                
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#story" class="font-medium text-gray-600 hover:text-brand-medium transition-colors duration-300">Our Story</a>
+                    <a href="#innovation" class="font-medium text-gray-600 hover:text-brand-medium transition-colors duration-300">The Innovation</a>
+                    <a href="#team" class="font-medium text-gray-600 hover:text-brand-medium transition-colors duration-300">Our Team</a>
+                    <a href="#impact" class="font-medium text-gray-600 hover:text-brand-medium transition-colors duration-300">Impact</a>
+                    <a href="#contact" class="font-medium text-gray-600 hover:text-brand-medium transition-colors duration-300">Contact</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="menu-btn" class="text-gray-700 hover:text-brand-medium focus:outline-none p-2 transition-colors duration-300" aria-label="Toggle menu">
+                        <svg id="menu-icon-open" class="h-7 w-7 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                        <svg id="menu-icon-close" class="h-7 w-7 hidden transition-transform duration-300 rotate-90" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu (Animated) -->
+        <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#story" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-brand-light hover:text-brand-medium rounded-md transition-colors duration-200">Our Story</a>
+                <a href="#innovation" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-brand-light hover:text-brand-medium rounded-md transition-colors duration-200">The Innovation</a>
+                <a href="#team" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-brand-light hover:text-brand-medium rounded-md transition-colors duration-200">Our Team</a>
+                <a href="#impact" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-brand-light hover:text-brand-medium rounded-md transition-colors duration-200">Impact</a>
+                <a href="#contact" class="block py-3 px-4 text-base font-medium text-gray-600 hover:bg-brand-light hover:text-brand-medium rounded-md transition-colors duration-200">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 
+          1. Hero Section
+        -->
+        <section class="relative h-screen hero-min-height flex items-center justify-center text-white text-center px-4">
+            <!-- Background Image -->
+            <div class="absolute inset-0 -z-10">
+                <img src="https://res.cloudinary.com/dyewebwsd/image/upload/v1763464928/ChatGPT_Image_Nov_18_2025_05_21_37_PM_dpdavu.png" 
+                     alt="Sustainable green city landscape" 
+                     class="w-full h-full object-cover" loading="eager">
+            </div>
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-black/40 -z-10"></div>
+            
+            <!-- Hero Content -->
+            <div class="max-w-4xl fade-in-section">
+                <h1 class="font-extrabold text-5xl md:text-7xl tracking-tight drop-shadow-lg">
+                    Lighting up cities.
+                    <span class="block text-brand-light/90 mt-2">Cleaning the air we breathe.</span>
+                </h1>
+                <p class="mt-6 text-xl md:text-2xl text-gray-100 max-w-3xl mx-auto font-medium drop-shadow-md leading-relaxed">
+                    A sustainable innovation to combat urban air pollution and reduce the greenhouse effect.
+                </p>
+            </div>
+        </section>
+
+        <!-- 
+          2. Our Story
+        -->
+        <section id="story" class="py-20 md:py-32 bg-brand-light">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <!-- Text Content -->
+                    <div class="fade-in-section">
+                        <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-brand-medium uppercase bg-green-100 rounded-full">
+                            Our Mission
+                        </div>
+                        <h2 class="text-4xl font-bold text-brand-dark tracking-tight mb-6">The Challenge We Face</h2>
+                        <p class="text-lg text-gray-600 leading-relaxed mb-8">
+                            Rising global $CO_2$ levels are accelerating the greenhouse effect, threatening environmental stability. Simultaneously, urban air pollution—filled with particulate matter and harmful gases—poses a direct and immediate threat to public health.
+                        </p>
+                        <h3 class="text-2xl font-bold text-brand-dark tracking-tight mb-4">Our Vision</h3>
+                        <p class="text-lg text-gray-600 leading-relaxed">
+                            Our vision is to integrate bio-technology seamlessly into existing urban infrastructure. We aim to create healthier, more sustainable communities by transforming everyday structures into active air purification systems, tackling both pollution and climate change at their source.
+                        </p>
+                    </div>
+                    <!-- Image -->
+                    <div class="fade-in-section delay-200 rounded-2xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition-transform duration-500">
+                        <img src="https://res.cloudinary.com/dusbdoji2/image/upload/v1763449596/c8ee8f5e-22fa-4f1d-97c4-6fc324adedb0_fzjsng.jpg" 
+                             alt="Heavy air pollution over a city"
+                             class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          3. The Innovation
+        -->
+        <section id="innovation" class="py-20 md:py-32 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-20 fade-in-section">
+                    <span class="text-brand-medium font-semibold uppercase tracking-wide">The Solution</span>
+                    <h2 class="mt-2 font-bold text-4xl md:text-5xl text-brand-dark tracking-tight">The EcoGlow System</h2>
+                    <p class="mt-6 text-lg text-gray-600 leading-relaxed">
+                        Our innovation, EcoGlow, is a solar-powered street lamp that actively purifies the air. It combines a multi-stage physical filter with a living algae photobioreactor to remove harmful pollutants and convert $CO_2$ into oxygen.
+                    </p>
+                </div>
+                
+                <!-- How It Works Cards -->
+                <div>
+                    <h3 class="text-center font-bold text-3xl text-brand-dark tracking-tight mb-12 fade-in-section">How It Works</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <!-- Step 1 -->
+                        <div class="fade-in-section delay-100 bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
+                            <div class="bg-brand-light text-brand-medium p-4 rounded-full w-20 h-20 mx-auto flex items-center justify-center mb-6">
+                                <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3c-1.2 0-2.3.4-3.2 1.1A6.8 6.8 0 002.6 9.6C2 10.7 1.7 12 1.7 13.3c0 1.6.6 3 1.6 4.2c.4.5.8 1 1.3 1.4c.1.1.2.2.2.2c.2.2.4.3.6.4l.2.2c.3.2.6.4.9.5c.3.1.6.3.9.4c.3.1.6.2.9.2c.3 0 .6.1.9.1h.2c.3 0 .6 0 .9-.1c.3 0 .6-.1.9-.2c.3-.1.6-.2.9-.4c.3-.1.6-.3.9-.5l.2-.2c.2-.1.4-.2.6-.4c.1-.1.2-.2.2-.2c.5-.4.9-.9 1.3-1.4c1-1.2 1.6-2.6 1.6-4.2c0-1.3-.3-2.6-1-3.7c-.6-1-1.5-1.8-2.6-2.5C14.3 3.4 13.2 3 12 3z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 5.2c1.7 0 3.2.8 4.2 2.1c.4.5.7.9.9 1.4c.2.5.3 1 .3 1.6c0 1.1-.4 2.1-1.1 2.9c-.2.2-.5.4-.7.6l-.3.2c-.2.1-.5.3-.7.4c-.3.1-.5.2-.8.2c-.3.1-.6.1-.9.1h-.1c-.3 0-.6 0-.9-.1c-.3 0-.5-.1-.8-.2c-.2-.1-.5-.2-.7-.4l-.3-.2c-.2-.2-.5-.4-.7-.6c-.7-.8-1.1-1.8-1.1-2.9c0-.6.1-1.1.3-1.6c.2-.5.5-1 .9-1.4c1-1.3 2.5-2.1 4.2-2.1zM12 15a.7.7 0 100 1.5a.7.7 0 000-1.5z" /></svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900">1. Intake & Filtration</h4>
+                            <p class="text-gray-600 mt-3">A fan pulls polluted air into the unit. It first passes through HEPA and activated carbon filters to remove dust, smoke, and harmful gases.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="fade-in-section delay-200 bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
+                            <div class="bg-brand-light text-brand-medium p-4 rounded-full w-20 h-20 mx-auto flex items-center justify-center mb-6">
+                                <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-5.23-4.27-9.5-9.5-9.5S.5 6.77.5 12s4.27 9.5 9.5 9.5s9.5-4.27 9.5-9.5z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15.5 8.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5s1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5zM8.5 14c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5s3.5-1.57 3.5-3.5s-1.57-3.5-3.5-3.5z" /></svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900">2. Bioreactor ($CO_2$ Capture)</h4>
+                            <p class="text-gray-600 mt-3">The filtered air enters the algae chamber, where *Chlorella vulgaris* absorbs carbon dioxide and releases oxygen through photosynthesis.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="fade-in-section delay-300 bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
+                            <div class="bg-brand-light text-brand-medium p-4 rounded-full w-20 h-20 mx-auto flex items-center justify-center mb-6">
+                                <svg class="h-10 w-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-6.364-.386l1.591-1.591M3 12H.75m.386-6.364l1.591 1.591M12 12a2.25 2.25 0 00-2.25 2.25v.01c0 1.17.9 2.12 2.01 2.12h.01a2.12 2.12 0 002.12-2.01v-.01A2.25 2.25 0 0012 12z" /></svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900">3. Sustainable Power</h4>
+                            <p class="text-gray-600 mt-3">Solar panels power the entire unit—including the fan, light, and monitoring sensors—allowing it to run sustainably and off-grid.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Benefits List -->
+                <div class="mt-20 md:mt-32">
+                    <h3 class="text-center font-bold text-3xl text-brand-dark tracking-tight mb-12 fade-in-section">Technical Benefits</h3>
+                    <ul class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <li class="fade-in-section delay-100 flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex-shrink-0 bg-brand-light text-brand-medium p-2 rounded-full">
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-2.666-2.886 3 3 0 00-2.666 2.886 3.75 3.75 0 00-7.257-1.332A4.5 4.5 0 002.25 15z" /></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">92% $CO_2$ Capture</h4>
+                                <p class="text-gray-600 mt-1 text-sm">High-density *Chlorella vulgaris* microalgae optimized for rapid gas–liquid exchange.</p>
+                            </div>
+                        </li>
+                        <li class="fade-in-section delay-200 flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex-shrink-0 bg-brand-light text-brand-medium p-2 rounded-full">
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h5.25v5.25H8.25V6.75zM3 3h18v18H3V3z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 14.25v-1.5h1.5v1.5H9zM10.5 14.25v-1.5h1.5v1.5h-1.5zM12 14.25v-1.5h1.5v1.5H12zM13.5 14.25v-1.5h1.5v1.5h-1.5z" /></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">Stable Oxygen Output</h4>
+                                <p class="text-gray-600 mt-1 text-sm">Up to 2.1 g $O_2$ / 100 g culture / day via optimized photon absorption.</p>
+                            </div>
+                        </li>
+                        <li class="fade-in-section delay-300 flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex-shrink-0 bg-brand-light text-brand-medium p-2 rounded-full">
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900">Low-Energy Design</h4>
+                                <p class="text-gray-600 mt-1 text-sm">Cuts power consumption by 55% compared to conventional photobioreactors.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          4. Our Team
+        -->
+        <section id="team" class="py-20 md:py-32 bg-brand-light">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-20 fade-in-section">
+                    <span class="text-brand-medium font-semibold uppercase tracking-wide">The Innovators</span>
+                    <h2 class="mt-2 font-bold text-4xl md:text-5xl text-brand-dark tracking-tight">Meet Our Team</h2>
+                    <p class="mt-6 text-lg text-gray-600 leading-relaxed">
+                        We are a passionate, interdisciplinary team united by a single goal: to engineer a sustainable future.
+                    </p>
+                </div>
+                
+                <!-- Team Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                     <!-- Member 1 (Coach) -->
+                     <div class="fade-in-section delay-100 team-card bg-white rounded-xl shadow-xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group">
+                        <img src="https://res.cloudinary.com/dyewebwsd/image/upload/v1763467329/c125d59d-7671-44ca-be28-04a173a03077_kkvupx.jpg" alt="Dr. Shaikh Mehdee Mohammad" class="team-img group-hover:border-brand transition-colors">
+                        <h4 class="text-xl font-bold text-brand-dark mt-4">Dr. Shaikh Mehdee Mohammad</h4>
+                        <p class="text-brand-medium font-medium text-sm uppercase tracking-wide">Coach</p>
+                        <p class="text-gray-500 mt-3 text-xs italic team-quote hidden">"Effort is the currency of progress. Spend it generously."</p>
+                        <p class="text-gray-400 mt-2 text-xs group-hover:text-brand-medium transition-colors">Click for bio</p>
+                    </div>
+                    <!-- Member 2 (Team Leader) -->
+                    <div class="fade-in-section delay-200 team-card bg-white rounded-xl shadow-xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group">
+                        <img src="https://res.cloudinary.com/dusbdoji2/image/upload/v1763449460/Adobe_Express_-_file_nkr07k.png" alt="Nabil Islam" class="team-img group-hover:border-brand transition-colors">
+                        <h4 class="text-xl font-bold text-brand-dark mt-4">Nabil Islam</h4>
+                        <p class="text-brand-medium font-medium text-sm uppercase tracking-wide">Team Leader</p>
+                        <p class="text-gray-500 mt-3 text-xs italic team-quote hidden">"Lead with clarity, act with purpose, and lift others as you rise."</p>
+                        <p class="text-gray-400 mt-2 text-xs group-hover:text-brand-medium transition-colors">Click for bio</p>
+                    </div>
+                    <!-- Member 3 -->
+                    <div class="fade-in-section delay-300 team-card bg-white rounded-xl shadow-xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group">
+                        <img src="https://res.cloudinary.com/dusbdoji2/image/upload/v1763449466/IMG_0224_w5qjrh.jpg" alt="MD Shahria Nafis" class="team-img group-hover:border-brand transition-colors">
+                        <h4 class="text-xl font-bold text-brand-dark mt-4">MD Shahria Nafis</h4>
+                        <p class="text-brand-medium font-medium text-sm uppercase tracking-wide">Researcher</p>
+                        <p class="text-gray-500 mt-3 text-xs italic team-quote hidden">"Seek truth with discipline, question everything, and let evidence guide the way."</p>
+                        <p class="text-gray-400 mt-2 text-xs group-hover:text-brand-medium transition-colors">Click for bio</p>
+                    </div>
+                    <!-- Member 4 -->
+                    <div class="fade-in-section delay-400 team-card bg-white rounded-xl shadow-xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group">
+                        <img src="https://res.cloudinary.com/dusbdoji2/image/upload/v1763449481/WhatsApp_Image_2025-11-17_at_6.30.17_PM_zmmuru.jpg" alt="MD Moshiur Rahman Maruf" class="team-img group-hover:border-brand transition-colors">
+                        <h4 class="text-xl font-bold text-brand-dark mt-4">MD Moshiur R. Maruf</h4>
+                        <p class="text-brand-medium font-medium text-sm uppercase tracking-wide">Documentation</p>
+                        <p class="text-gray-500 mt-3 text-xs italic team-quote hidden">"Document clearly so others can build confidently."</p>
+                        <p class="text-gray-400 mt-2 text-xs group-hover:text-brand-medium transition-colors">Click for bio</p>
+                    </div>
+                    <!-- Member 5 -->
+                    <div class="fade-in-section delay-500 team-card bg-white rounded-xl shadow-xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group">
+                        <img src="https://res.cloudinary.com/dusbdoji2/image/upload/v1763449492/DSC04800_qn684j.jpg" alt="Afik Hasan" class="team-img group-hover:border-brand transition-colors">
+                        <h4 class="text-xl font-bold text-brand-dark mt-4">Afik Hasan</h4>
+                        <p class="text-brand-medium font-medium text-sm uppercase tracking-wide">Technical</p>
+                        <p class="text-gray-500 mt-3 text-xs italic team-quote hidden">"Precision in every detail, reliability in every build."</p>
+                        <p class="text-gray-400 mt-2 text-xs group-hover:text-brand-medium transition-colors">Click for bio</p>
+                    </div>
+                    <!-- Member 6 -->
+                    <div class="fade-in-section delay-500 team-card bg-white rounded-xl shadow-xl p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group">
+                        <img src="https://res.cloudinary.com/dusbdoji2/image/upload/v1763449471/507167312_675697848794237_3050379649370526682_n_rocpkv.jpg" alt="Nahian Mamun" class="team-img group-hover:border-brand transition-colors">
+                        <h4 class="text-xl font-bold text-brand-dark mt-4">Nahian Mamun</h4>
+                        <p class="text-brand-medium font-medium text-sm uppercase tracking-wide">Documentation</p>
+                        <p class="text-gray-500 mt-3 text-xs italic team-quote hidden">"Good documentation turns complex work into shared knowledge."</p>
+                        <p class="text-gray-400 mt-2 text-xs group-hover:text-brand-medium transition-colors">Click for bio</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          5. Impact & Future
+        -->
+        <section id="impact" class="py-20 md:py-32 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <!-- Text Content -->
+                    <div class="fade-in-section">
+                        <span class="text-brand-medium font-semibold uppercase tracking-wide">The Future</span>
+                        <h2 class="mt-2 font-bold text-4xl md:text-5xl text-brand-dark tracking-tight">Our Path Forward</h2>
+                        
+                        <div class="mt-8">
+                            <h3 class="font-bold text-2xl text-brand-dark">Our Progress</h3>
+                            <p class="mt-2 text-lg text-gray-600 leading-relaxed border-l-4 border-brand-medium pl-4">
+                                We have completed a validated design prototype of the EcoGlow system, including a functional algae-based air purification module and a tested sensor framework for monitoring air quality and system performance.
+                            </p>
+                        </div>
+
+                        <div class="mt-8">
+                            <h3 class="font-bold text-2xl text-brand-dark">Next Steps</h3>
+                            <ol class="mt-4 space-y-4">
+                                <li class="flex items-start">
+                                    <span class="flex items-center justify-center w-8 h-8 rounded-full bg-brand text-white font-bold text-sm mr-3">1</span>
+                                    <span class="text-lg text-gray-600">Begin controlled field testing to measure real-world air purification efficiency and solar-powered performance.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="flex items-center justify-center w-8 h-8 rounded-full bg-brand text-white font-bold text-sm mr-3">2</span>
+                                    <span class="text-lg text-gray-600">Prepare and publish initial technical findings to support scaling, refinement, and potential partnerships.</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <!-- Image -->
+                    <div class="fade-in-section delay-200 rounded-2xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition-transform duration-500">
+                        <img src="https://res.cloudinary.com/dusbdoji2/image/upload/v1763449608/ecd37026-c9fa-4a13-97a9-396774e8bc2b_dh37gq.jpg" 
+                             alt="Advanced bioreactor for algae cultivation"
+                             class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 
+      Footer
+    -->
+    <footer id="contact" class="bg-brand-dark text-gray-200 py-16 fade-in-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Column 1: Brand -->
+                <div>
+                    <!-- Added a white background container to Ensure Logo Visibility -->
+                    <a href="#" class="inline-block bg-white/10 p-3 rounded-lg backdrop-blur-sm hover:bg-white/20 transition-colors">
+                         <img src="https://res.cloudinary.com/dusbdoji2/image/upload/v1763449399/IMG_0085_pdy6yy.png" alt="OxyVerde Logo" class="h-10 w-auto">
+                    </a>
+                    <p class="mt-4 text-gray-300 text-sm leading-relaxed">
+                        Student-led innovation for a sustainable future.<br>
+                        Designing the breath of tomorrow.
+                    </p>
+                </div>
+                
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <h5 class="font-semibold text-white uppercase tracking-wider border-b border-brand-medium pb-2 mb-4 inline-block">Quick Links</h5>
+                    <ul class="space-y-3">
+                        <li><a href="#story" class="text-gray-300 hover:text-white hover:translate-x-1 inline-block transition-all">Our Story</a></li>
+                        <li><a href="#innovation" class="text-gray-300 hover:text-white hover:translate-x-1 inline-block transition-all">The Innovation</a></li>
+                        <li><a href="#team" class="text-gray-300 hover:text-white hover:translate-x-1 inline-block transition-all">Our Team</a></li>
+                        <li><a href="#impact" class="text-gray-300 hover:text-white hover:translate-x-1 inline-block transition-all">Impact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3: Contact & Social -->
+                <div>
+                    <h5 class="font-semibold text-white uppercase tracking-wider border-b border-brand-medium pb-2 mb-4 inline-block">Connect With Us</h5>
+                    
+                    <!-- Email -->
+                    <a href="mailto:teamoxyverde@gmail.com" class="flex items-center space-x-3 group mb-4 p-2 -ml-2 rounded hover:bg-brand-medium/30 transition-colors">
+                        <div class="bg-brand-medium p-2 rounded-full group-hover:bg-brand transition-colors">
+                            <svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                            </svg>
+                        </div>
+                        <span class="text-gray-300 group-hover:text-white transition-colors text-sm">teamoxyverde@gmail.com</span>
+                    </a>
+
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/people/OxyVerde/61584031315703/" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-3 group p-2 -ml-2 rounded hover:bg-brand-medium/30 transition-colors">
+                        <div class="bg-brand-medium p-2 rounded-full group-hover:bg-blue-600 transition-colors">
+                            <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-300 group-hover:text-white transition-colors text-sm">Follow us on Facebook</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="mt-12 pt-8 border-t border-brand-medium/30 text-center">
+                <p class="text-sm text-gray-400">&copy; 2025 OxyVerde. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- 
+      Team Member Modal
+    -->
+    <div id="team-modal" class="fixed inset-0 z-[100] items-center justify-center p-4 hidden flex" aria-hidden="true">
+        <!-- Modal Background Overlay -->
+        <div id="modal-bg" class="absolute inset-0 bg-black/70 backdrop-blur-sm cursor-pointer"></div>
+        
+        <!-- Modal Content -->
+        <div id="modal-content" class="relative bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl border-t-4 border-brand-medium transform transition-all">
+            <!-- Close Button -->
+            <button id="modal-close" class="absolute top-4 right-4 text-gray-400 hover:text-brand-dark hover:scale-110 transition-transform p-1 rounded-full hover:bg-gray-100" aria-label="Close Modal">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- Modal Image -->
+            <div class="w-32 h-32 mx-auto mb-6 p-1 rounded-full border-2 border-brand-light">
+                 <img id="modal-img" src="" alt="Team Member" class="w-full h-full object-cover object-top rounded-full">
+            </div>
+           
+            <!-- Modal Text -->
+            <div class="text-center">
+                <h3 id="modal-name" class="text-2xl font-bold text-brand-dark mb-1"></h3>
+                <p id="modal-role" class="text-sm font-semibold text-brand-medium tracking-wider uppercase mb-4"></p>
+                <div class="relative">
+                    <svg class="absolute top-0 left-0 transform -translate-x-4 -translate-y-2 h-8 w-8 text-gray-200" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
+                        <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.552-7.104 6.624-9.024L25.864 4z" />
+                    </svg>
+                    <p id="modal-quote" class="text-gray-600 text-lg italic relative z-10 px-4"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 
+      JavaScript
+    -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Mobile Menu Logic ---
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+            
+            menuBtn.addEventListener('click', () => {
+                const isOpen = mobileMenu.classList.contains('menu-open');
+                
+                if (isOpen) {
+                    mobileMenu.classList.remove('menu-open');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                } else {
+                    mobileMenu.classList.add('menu-open');
+                    menuIconOpen.classList.add('hidden');
+                    menuIconClose.classList.remove('hidden');
+                }
+            });
+            
+            // Close menu when clicking a link
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('menu-open');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                });
+            });
+
+            // --- Smooth Scroll & Fade Animation ---
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.10 // Trigger slightly earlier
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in-section').forEach(section => {
+                observer.observe(section);
+            });
+
+            // --- Team Modal Logic ---
+            const modal = document.getElementById('team-modal');
+            const modalBg = document.getElementById('modal-bg');
+            const modalClose = document.getElementById('modal-close');
+            const modalContent = document.getElementById('modal-content');
+            
+            const modalImg = document.getElementById('modal-img');
+            const modalName = document.getElementById('modal-name');
+            const modalRole = document.getElementById('modal-role');
+            const modalQuote = document.getElementById('modal-quote');
+            
+            const teamCards = document.querySelectorAll('.team-card');
+
+            function openModal(card) {
+                // Extract data from hidden elements in the card
+                const imgSrc = card.querySelector('img').src;
+                const name = card.querySelector('h4').innerText;
+                const role = card.querySelector('p:nth-of-type(1)').innerText;
+                const quote = card.querySelector('.team-quote').innerText;
+
+                // Set content
+                modalImg.src = imgSrc;
+                modalName.textContent = name;
+                modalRole.textContent = role;
+                modalQuote.textContent = quote;
+
+                // Show
+                modal.classList.remove('hidden');
+                // Disable body scroll
+                document.body.style.overflow = 'hidden';
+
+                // Small timeout to allow CSS transition to catch the class change
+                setTimeout(() => {
+                    modal.classList.add('is-open');
+                }, 10);
+            }
+
+            function closeModal() {
+                modal.classList.remove('is-open');
+                // Re-enable body scroll
+                document.body.style.overflow = '';
+                
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300); // Matches CSS transition duration
+            }
+
+            teamCards.forEach(card => {
+                card.addEventListener('click', () => openModal(card));
+            });
+
+            modalClose.addEventListener('click', closeModal);
+            modalBg.addEventListener('click', closeModal);
+            
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
